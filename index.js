@@ -2,16 +2,19 @@ const arrow = document.getElementById('arrow');
 const infoContainer = document.getElementById('info');
 const inputIP = document.getElementById('inputIP');
 
+const API_KEY = 'at_5JFgV4ngaQmpUPdhMWCF1IcITZUo0';
+
 // Inicializar mapa
-const map = L.map('map').setView([0, 0], 2); // Vista más general al principio
+const map = L.map('map').setView([0, 0], 2);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-// Reutilizable: mostrar info y actualizar mapa
+// Mostrar datos y actualizar mapa
 function mostrarDatos(data) {
-  const { latitude, longitude, city, region, country_name, org, timezone, ip } = data;
+  const { ip, isp, location } = data;
+  const { city, region, country, timezone, lat, lng } = location;
 
   infoContainer.innerHTML = `
     <div class="text-center">
@@ -20,7 +23,7 @@ function mostrarDatos(data) {
     </div>
     <div class="text-center">
         <h6 class="text-[10px] font-medium text-gray-600">LOCATION</h6>
-        <p class="text-lg font-semibold">${city}, ${region}, ${country_name}</p>
+        <p class="text-lg font-semibold">${city}, ${region}, ${country}</p>
     </div>
     <div class="text-center">
         <h6 class="text-[10px] font-medium text-gray-600">TIMEZONE</h6>
@@ -28,24 +31,19 @@ function mostrarDatos(data) {
     </div>
     <div class="text-center">
         <h6 class="text-[10px] font-medium text-gray-600">ISP</h6>
-        <p class="text-lg font-semibold">${org}</p>
+        <p class="text-lg font-semibold">${isp}</p>
     </div>
   `;
 
-  map.setView([latitude, longitude], 13);
-  L.marker([latitude, longitude]).addTo(map);
+  map.setView([lat, lng], 13);
+  L.marker([lat, lng]).addTo(map);
 }
 
-// Obtener IP pública al cargar
+// Obtener IP pública al cargar y mostrar datos
 function obtenerIPPorDefecto() {
-  fetch('https://api.ipify.org?format=json')
+  fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=${API_KEY}`)
     .then(res => res.json())
-    .then(data => fetch(`https://ipapi.co/${data.ip}/json/`))
-    .then(res => res.json())
-    .then(data => {
-      if (!data.latitude || !data.longitude) throw new Error("Ubicación no disponible.");
-      mostrarDatos(data);
-    })
+    .then(data => mostrarDatos(data))
     .catch(err => {
       console.error(err);
       infoContainer.textContent = "No se pudo obtener la información de tu IP.";
@@ -57,10 +55,10 @@ function buscarIP() {
   const ip = inputIP.value.trim();
   if (!ip) return alert("Por favor ingresa una IP.");
 
-  fetch(`https://ipapi.co/${ip}/json/`)
+  fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=${API_KEY}&ipAddress=${ip}`)
     .then(res => res.json())
     .then(data => {
-      if (data.error || !data.latitude || !data.longitude) {
+      if (!data.location || !data.location.lat || !data.location.lng) {
         infoContainer.textContent = "IP no válida o no encontrada.";
         return;
       }
@@ -74,5 +72,4 @@ function buscarIP() {
 
 arrow.addEventListener('click', buscarIP);
 
-// Ejecutar al cargar la página
-obtenerIPPorDefecto();
+document.addEventListener('DOMContentLoaded', obtenerIPPorDefecto);
