@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="./src/output.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  
+  <title>Frontend Mentor | IP Address Tracker</title>
+
+</head>
+<body>
+<main class="relative h-screen">
+  <header class="w-full bg-[url(/images/pattern-bg-mobile.png)] h-60 bg-cover">
+    <h1 class="text-3xl font-semibold text-white text-center pt-10">IP Adress Tracker</h1>
+  </header>
+  <section class="w-full h-full absolute top-1/6 z-20">
+    <form class="w-full" action="">
+      <fieldset class=" w-4/5  flex justify-between border border-gray-600 mx-auto my-3  rounded-tr-xl rounded-br-xl">
+        <input  class="w-full bg-white rounded-bl-lg rounded-tl-lg" type="search" name="" id="inputIP">
+        <img id="arrow" class="w-12 h-12 p-3 bg-black rounded-br-lg rounded-tr-lg " src="images/icon-arrow.svg" alt="">
+
+      </fieldset>
+      <fieldset id="info" class="flex flex-col bg-white w-4/5 m-auto rounded-xl h-auto justify-between items-center py-3 gap-3">
+        <!-- <div class="text-center">
+          <h6 class=" text-[10px] font-medium text-gray-600">IP ADDRESS</h6>
+          <p class="text-lg font-semibold">Hola</p>
+        </div>
+        <div class="text-center">
+          <h5 class=" text-[10px] font-medium text-gray-600">LOCATION</h6>
+          <p class="text-lg font-semibold">Hola</p>
+        </div>
+        <div class="text-center">
+          <h6 class=" text-[10px] font-medium text-gray-600">TIMEZONE</h6>
+          <p class="text-lg font-semibold">Hola</p>
+        </div>
+        <div class="text-center">
+          <h6 class=" text-[10px] font-medium text-gray-600">ISP</h6>
+          <p class="text-lg font-semibold">Hola</p>
+        </div> -->
+      </fieldset>
+    </form>
+  </section>
+  <div id="map" class="w-full h-full z-10">
+
+  </div>
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="index.js"></script>
+</body>
+</html>
